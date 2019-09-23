@@ -16,6 +16,7 @@ import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
@@ -67,10 +68,23 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         /* Le principe :
                 1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
                     (table sequence_ecriture_comptable)
+        */   
+        Integer vEcritureComptableYear = Integer.parseInt(new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate()));
+        SequenceEcritureComptable vSequenceRecherche = new SequenceEcritureComptable();
+        vSequenceRecherche.setJournalCode(pEcritureComptable.getJournal().getCode());
+        vSequenceRecherche.setAnnee(vEcritureComptableYear);
+        SequenceEcritureComptable vSequenceTrouvee = getDaoProxy().getComptabiliteDao().getSequenceParCodeEtAnnee(vSequenceRecherche);
+    	/*
+                 
                 2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
                         1. Utiliser le numéro 1.
                     * Sinon :
                         1. Utiliser la dernière valeur + 1
+         */
+        Integer vSequenceValeur;
+        if (vSequenceTrouvee == null) vSequenceValeur = 1;
+        else vSequenceValeur = vSequenceTrouvee.getDerniereValeur() + 1;
+        /*
                 3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
                 4.  Enregistrer (insert/update) la valeur de la séquence en persitance
                     (table sequence_ecriture_comptable)
@@ -137,16 +151,15 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         // vérifier que l'année dans la référence correspond bien à la date de l'écriture, idem pour le code journal...
         String dateEcriture= new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate());
        
-        if (pEcritureComptable.getReference().substring(3, 7).equals(dateEcriture))
+        if (!pEcritureComptable.getReference().substring(3, 7).equals(dateEcriture))
             throw new FunctionalException(
                     "La date d'écriture ne correspond pas à la date de référence");
         
-        if (pEcritureComptable.getReference().substring(0, 1).equals(pEcritureComptable.getJournal().getCode()))
+        if (!pEcritureComptable.getReference().substring(0, 1).equals(pEcritureComptable.getJournal().getCode()))
             throw new FunctionalException(
                     "Le code journal dans la référence est erroné, il ne correspond pas au code du bon journal");
     }
         
-    }
 
 
     /**
