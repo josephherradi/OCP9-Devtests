@@ -11,7 +11,8 @@ public class SequenceEcritureComptable {
     private Integer annee;
     /** La dernière valeur utilisée */
     private Integer derniereValeur;
-    String journalCode;
+    
+    private String journalCode;
 
     // ==================== Constructeurs ====================
     /**

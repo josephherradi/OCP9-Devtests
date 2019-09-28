@@ -7,6 +7,7 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
+import com.dummy.myerp.technical.exception.NotFoundException;
 
 
 /**
@@ -91,4 +92,13 @@ public interface ComptabiliteManager {
      * @param pSequence -
      */
     void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
+    
+    /**
+     * Retourne l'Écriture Comptable par l'ID {@code pId}.
+     *
+     * @param pId ID
+     * @return {@link EcritureComptable}
+     */
+    
+    EcritureComptable getEcritureComptable(Integer pId) throws NotFoundException;
 }

@@ -264,4 +264,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 	            getTransactionManager().rollbackMyERP(vTS);
 	        }
 	    }
+
+
+	@Override
+	public EcritureComptable getEcritureComptable(Integer pId) throws NotFoundException {
+		return getDaoProxy().getComptabiliteDao().getEcritureComptable(pId);
+	}
 }
