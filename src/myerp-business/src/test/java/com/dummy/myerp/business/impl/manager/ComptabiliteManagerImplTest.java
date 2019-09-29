@@ -3,11 +3,17 @@ package com.dummy.myerp.business.impl.manager;
 import static org.junit.Assert.assertNotEquals;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.dummy.myerp.business.impl.AbstractBusinessManager;
+import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
@@ -20,8 +26,21 @@ import com.dummy.myerp.technical.exception.NotFoundException;
 public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
 
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
+    private ClassPathXmlApplicationContext appContext;
+    private static ComptabiliteDaoImpl dao;
+    
+    @Before
+    public void setUp() throws Exception{
+    appContext= new ClassPathXmlApplicationContext("classpath:testContext.xml");
+    dao = new ComptabiliteDaoImpl();
 
-
+    }
+    
+    @After
+    public void tearDown() throws Exception{
+    	appContext=null;
+    	dao=null;
+    }
     @Test
     public void checkEcritureComptableUnit() throws Exception {
         EcritureComptable vEcritureComptable;
@@ -80,24 +99,28 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
     }
     
     @Test
-    public void addReference() throws NotFoundException{
+    public void addReference() throws NotFoundException, ParseException{
     	EcritureComptable pEcritureComptable=new EcritureComptable();
     	
     	Integer vEcritureComptableAnnee = 2016;
     	pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
-    	pEcritureComptable.setDate(new Date());
-    	pEcritureComptable.setLibelle("test");
-    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+    	Date d = sdf.parse("2016/12/31");
+
+
+    	pEcritureComptable.setDate(d);
+    	pEcritureComptable.setLibelle("Achat");
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
                 null, new BigDecimal(123),
                 null));
-    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
                 null, null,
                 new BigDecimal(1234)));
     	
     	SequenceEcritureComptable vSequenceRecherche = new SequenceEcritureComptable();
         vSequenceRecherche.setJournalCode("AC");
         vSequenceRecherche.setAnnee(vEcritureComptableAnnee);
-        SequenceEcritureComptable vSequenceTrouvee = getDaoProxy().getComptabiliteDao().getSequenceParCodeEtAnnee(vSequenceRecherche);
+        SequenceEcritureComptable vSequenceTrouvee = dao.getSequenceParCodeEtAnnee(vSequenceRecherche);
         Integer vSequenceValeur;
         if (vSequenceTrouvee == null) vSequenceValeur = 1;
         else vSequenceValeur = vSequenceTrouvee.getDerniereValeur() + 1;
@@ -106,14 +129,16 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
                 "-" + vEcritureComptableAnnee +
                 "/" + String.format("%05d", vSequenceValeur);
          pEcritureComptable.setReference(vReferenceEcriture);
+         pEcritureComptable.setId(-1);
 			manager.updateEcritureComptable(pEcritureComptable);
 			
 		assertNotEquals(manager.getEcritureComptable(pEcritureComptable.getId()).getReference(),"TST-2019/00002");
     }
-    
+  
     @Test
     public void getEcritureByref() throws NotFoundException {
-    	EcritureComptable ecriture=getDaoProxy().getComptabiliteDao().getEcritureComptableByRef("AC-2019/00001");
+    	EcritureComptable ecriture=dao.getEcritureComptableByRef("VE-2016/00002");
+
     }
     
 }

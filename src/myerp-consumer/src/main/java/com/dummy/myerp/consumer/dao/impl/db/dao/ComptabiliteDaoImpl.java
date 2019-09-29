@@ -44,7 +44,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     /**
      * Constructeur.
      */
-    protected ComptabiliteDaoImpl() {
+    public ComptabiliteDaoImpl() {
         super();
     }
 
@@ -272,24 +272,35 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     // ==================== EcritureComptable - GET ====================
 
     private static String SQLgetSequenceParCodeEtAnnee;
-    public void setSQLgetSequenceByCodeEtAnnee(String pSQLgetSequenceParCodeEtAnnee) {
-    	SQLgetSequenceParCodeEtAnnee = pSQLgetSequenceParCodeEtAnnee;
-    }
+
+	public static void setSQLgetSequenceParCodeEtAnnee(String sQLgetSequenceParCodeEtAnnee) {
+		SQLgetSequenceParCodeEtAnnee = sQLgetSequenceParCodeEtAnnee;
+	}
+
 	@Override
 	public SequenceEcritureComptable getSequenceParCodeEtAnnee(SequenceEcritureComptable pSequence) {
 		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
         SequenceEcritureComptableRM vRM = new SequenceEcritureComptableRM();
         MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
         vSqlParams.addValue("journal_code", pSequence.getJournalCode());
-        vSqlParams.addValue("annee", pSequence.getAnnee());		
-        return vJdbcTemplate.queryForObject(SQLgetSequenceParCodeEtAnnee, vSqlParams, vRM);
+        vSqlParams.addValue("annee", pSequence.getAnnee());	
+        SequenceEcritureComptable vBean;
+        try {
+        	vBean=vJdbcTemplate.queryForObject(SQLgetSequenceParCodeEtAnnee, vSqlParams, vRM);
+        } catch (EmptyResultDataAccessException vEx) {
+        	vBean=null;
+        }
+        
+        return vBean;
 	}
 
     // ==================== EcritureComptable - UPSERT ====================
 	private static String SQLupsertSequenceEcritureComptable;
-    public void setSQLupsertSequenceEcritureComptable(String pSQLupsertSequenceEcritureComptable) {
-        SQLupsertSequenceEcritureComptable = pSQLupsertSequenceEcritureComptable;
-    }
+
+	public static void setSQLupsertSequenceEcritureComptable(String sQLupsertSequenceEcritureComptable) {
+		SQLupsertSequenceEcritureComptable = sQLupsertSequenceEcritureComptable;
+	}
+
 	@Override
 	public void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence) {
 		  NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
@@ -300,4 +311,5 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
 
 	        vJdbcTemplate.update(SQLupsertSequenceEcritureComptable, vSqlParams);		
 	}
+	
 }

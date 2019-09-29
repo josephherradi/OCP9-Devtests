@@ -91,7 +91,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 "-" + vEcritureComptableAnnee +
                 "/" + String.format("%05d", vSequenceValeur);
         pEcritureComptable.setReference(vReferenceEcriture);
-			this.updateEcritureComptable(pEcritureComptable);
+		this.updateEcritureComptable(pEcritureComptable);
 	
         /*             
                 
@@ -171,7 +171,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             throw new FunctionalException(
                     "La date d'écriture ne correspond pas à la date de référence");
         
-        if (!pEcritureComptable.getReference().substring(0, 1).equals(pEcritureComptable.getJournal().getCode()))
+        if (!pEcritureComptable.getReference().substring(0, 2).equals(pEcritureComptable.getJournal().getCode()))
             throw new FunctionalException(
                     "Le code journal dans la référence est erroné, il ne correspond pas au code du bon journal");
     }
