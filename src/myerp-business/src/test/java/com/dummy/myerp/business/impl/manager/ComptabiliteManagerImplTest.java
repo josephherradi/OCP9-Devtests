@@ -1,7 +1,6 @@
 package com.dummy.myerp.business.impl.manager;
 
-import static org.junit.Assert.assertNotEquals;
-
+import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -103,13 +102,13 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
     	EcritureComptable pEcritureComptable=new EcritureComptable();
     	
     	Integer vEcritureComptableAnnee = 2016;
-    	pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+    	pEcritureComptable.setJournal(new JournalComptable("OD", "Test"));
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     	Date d = sdf.parse("2016/12/31");
 
 
     	pEcritureComptable.setDate(d);
-    	pEcritureComptable.setLibelle("Achat");
+    	pEcritureComptable.setLibelle("Test");
     	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
                 null, new BigDecimal(123),
                 null));
@@ -118,7 +117,7 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
                 new BigDecimal(1234)));
     	
     	SequenceEcritureComptable vSequenceRecherche = new SequenceEcritureComptable();
-        vSequenceRecherche.setJournalCode("AC");
+        vSequenceRecherche.setJournalCode("OD");
         vSequenceRecherche.setAnnee(vEcritureComptableAnnee);
         SequenceEcritureComptable vSequenceTrouvee = dao.getSequenceParCodeEtAnnee(vSequenceRecherche);
         Integer vSequenceValeur;
@@ -132,13 +131,14 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
          pEcritureComptable.setId(-1);
 			manager.updateEcritureComptable(pEcritureComptable);
 			
-		assertNotEquals(manager.getEcritureComptable(pEcritureComptable.getId()).getReference(),"TST-2019/00002");
-    }
-  
-    @Test
-    public void getEcritureByref() throws NotFoundException {
-    	EcritureComptable ecriture=dao.getEcritureComptableByRef("VE-2016/00002");
-
+		
+	        SequenceEcritureComptable vNouvelleSequence= new SequenceEcritureComptable();
+	        vNouvelleSequence.setAnnee(vEcritureComptableAnnee);
+	        vNouvelleSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
+	        vNouvelleSequence.setDerniereValeur(vSequenceValeur);
+	        manager.upsertSequenceEcritureComptable(vNouvelleSequence);
+			
+		assertEquals(manager.getEcritureComptable(pEcritureComptable.getId()).getReference(),vReferenceEcriture);
     }
     
 }

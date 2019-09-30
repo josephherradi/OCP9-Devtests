@@ -1,13 +1,11 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 import java.math.BigDecimal;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 
@@ -36,15 +34,12 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
         assertEquals(vEcriture.getTotalDebit(), vEcriture.getTotalCredit().setScale(2));
 
-//        Assert.assertTrue(vEcriture.toString(), vEcriture.isEquilibree());
-
         vEcriture.getListLigneEcriture().clear();
         vEcriture.setLibelle("Non équilibrée");
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "10", null));
         vEcriture.getListLigneEcriture().add(this.createLigne(1, "20", "1"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "30"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
-//        Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
         assertNotEquals(vEcriture.getTotalDebit(), vEcriture.getTotalCredit());
 
     }
@@ -70,6 +65,15 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
         assertEquals(vEcriture.getTotalCredit(),BigDecimal.valueOf(33));
     }
+    
+    @Test
+    public void codeRefEqualsJournalCode() {
+    	EcritureComptable vEcriture;
+        vEcriture = new EcritureComptable();
+        vEcriture.setJournal(new JournalComptable("OD", "Opérations Diverses"));
+        vEcriture.setReference("OD-2016/00006");
+        assertEquals(vEcriture.getReference().substring(0, 2),vEcriture.getJournal().getCode());
+    }  
     
 
 }
