@@ -104,7 +104,12 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         vNouvelleSequence.setAnnee(vEcritureComptableAnnee);
         vNouvelleSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
         vNouvelleSequence.setDerniereValeur(vSequenceValeur);
-        this.upsertSequenceEcritureComptable(vNouvelleSequence);
+        
+        if (vSequenceTrouvee == null) {
+        	this.insertSequenceEcritureComptable(vNouvelleSequence);
+        } else {
+        	this.updateSequenceEcritureComptable(vNouvelleSequence);
+        }
     }
 
     /**
@@ -254,20 +259,36 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
 
 	@Override
-	public void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence) {
-		 TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
-	        try {
-	            getDaoProxy().getComptabiliteDao().upsertSequenceEcritureComptable(pSequence);
-	            getTransactionManager().commitMyERP(vTS);
-	            vTS = null;
-	        } finally {
-	            getTransactionManager().rollbackMyERP(vTS);
-	        }
-	    }
-
-
-	@Override
 	public EcritureComptable getEcritureComptable(Integer pId) throws NotFoundException {
 		return getDaoProxy().getComptabiliteDao().getEcritureComptable(pId);
 	}
+
+
+@Override
+public void insertSequenceEcritureComptable(SequenceEcritureComptable pSequence) {
+	   TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
+	    try {
+	        getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(pSequence);;
+	        getTransactionManager().commitMyERP(vTS);
+	        vTS = null;
+	    } finally {
+	        getTransactionManager().rollbackMyERP(vTS);
+	    }	
+	
+}
+
+
+@Override
+public void updateSequenceEcritureComptable(SequenceEcritureComptable pSequence) {
+    TransactionStatus vTS = getTransactionManager().beginTransactionMyERP();
+    try {
+        getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(pSequence);;
+        getTransactionManager().commitMyERP(vTS);
+        vTS = null;
+    } finally {
+        getTransactionManager().rollbackMyERP(vTS);
+    }	
+}
+
+
 }

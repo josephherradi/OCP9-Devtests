@@ -96,6 +96,9 @@ public interface ComptabiliteDao {
      *
      * @param pSequence -
      */
-    void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
+    void insertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
+    
+    
+    void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable);
 }
 

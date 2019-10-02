@@ -87,11 +87,18 @@ public interface ComptabiliteManager {
     
 
     /**
-     * Insert une nouvelle séquence écriture comptable ou maj dejà exsitente.
+     * Insert une nouvelle séquence écriture comptable 
      *
      * @param pSequence -
      */
-    void upsertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
+    void insertSequenceEcritureComptable(SequenceEcritureComptable pSequence);
+    
+    /**
+     * maj une séquence écriture comptable 
+     *
+     * @param pSequence -
+     */
+    void updateSequenceEcritureComptable(SequenceEcritureComptable pSequence);
     
     /**
      * Retourne l'Écriture Comptable par l'ID {@code pId}.

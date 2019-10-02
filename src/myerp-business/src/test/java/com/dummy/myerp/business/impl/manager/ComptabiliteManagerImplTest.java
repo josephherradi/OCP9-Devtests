@@ -102,7 +102,7 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
     	EcritureComptable pEcritureComptable=new EcritureComptable();
     	
     	Integer vEcritureComptableAnnee = 2016;
-    	pEcritureComptable.setJournal(new JournalComptable("OD", "Test"));
+    	pEcritureComptable.setJournal(new JournalComptable("OP", "Test"));
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     	Date d = sdf.parse("2016/12/31");
 
@@ -117,7 +117,7 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
                 new BigDecimal(1234)));
     	
     	SequenceEcritureComptable vSequenceRecherche = new SequenceEcritureComptable();
-        vSequenceRecherche.setJournalCode("OD");
+        vSequenceRecherche.setJournalCode("OP");
         vSequenceRecherche.setAnnee(vEcritureComptableAnnee);
         SequenceEcritureComptable vSequenceTrouvee = dao.getSequenceParCodeEtAnnee(vSequenceRecherche);
         Integer vSequenceValeur;
@@ -136,7 +136,11 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
 	        vNouvelleSequence.setAnnee(vEcritureComptableAnnee);
 	        vNouvelleSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
 	        vNouvelleSequence.setDerniereValeur(vSequenceValeur);
-	        manager.upsertSequenceEcritureComptable(vNouvelleSequence);
+	        if (vSequenceTrouvee == null) {
+	        	manager.insertSequenceEcritureComptable(vNouvelleSequence);
+	        } else {
+	        	manager.updateSequenceEcritureComptable(vNouvelleSequence);
+	        }
 			
 		assertEquals(manager.getEcritureComptable(pEcritureComptable.getId()).getReference(),vReferenceEcriture);
     }
