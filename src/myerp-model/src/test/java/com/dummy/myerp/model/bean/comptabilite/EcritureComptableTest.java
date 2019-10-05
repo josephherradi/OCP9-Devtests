@@ -2,6 +2,7 @@ package com.dummy.myerp.model.bean.comptabilite;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 
@@ -74,6 +75,14 @@ public class EcritureComptableTest {
         vEcriture.setReference("OD-2016/00006");
         assertEquals(vEcriture.getReference().substring(0, 2),vEcriture.getJournal().getCode());
     }  
+    
+    @Test
+    public void getReference() {
+    	EcritureComptable vEcriture;
+        vEcriture = new EcritureComptable();
+        vEcriture.setReference("VE-2019/00001");
+        assertTrue("La référence ne respecte pas le format du pattern \"XX-AAAA/#####\"",vEcriture.getReference().matches("[A-Z]{1,5}-\\d{4}/\\d{5}"));
+    }
     
 
 }

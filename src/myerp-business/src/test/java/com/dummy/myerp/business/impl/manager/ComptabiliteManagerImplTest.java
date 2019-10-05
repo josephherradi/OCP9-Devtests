@@ -97,14 +97,13 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
     
-    @Test
-    public void addReference() throws NotFoundException, ParseException{
+    @Test(expected= NotFoundException.class)
+    public void addReference() throws Exception {
     	EcritureComptable pEcritureComptable=new EcritureComptable();
-    	
-    	Integer vEcritureComptableAnnee = 2016;
+    	pEcritureComptable.setId(-1);
     	pEcritureComptable.setJournal(new JournalComptable("OP", "Test"));
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-    	Date d = sdf.parse("2016/12/31");
+    	Date d = sdf.parse("2019/12/31");
 
 
     	pEcritureComptable.setDate(d);
@@ -116,33 +115,8 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
                 null, null,
                 new BigDecimal(1234)));
     	
-    	SequenceEcritureComptable vSequenceRecherche = new SequenceEcritureComptable();
-        vSequenceRecherche.setJournalCode("OP");
-        vSequenceRecherche.setAnnee(vEcritureComptableAnnee);
-        SequenceEcritureComptable vSequenceTrouvee = dao.getSequenceParCodeEtAnnee(vSequenceRecherche);
-        Integer vSequenceValeur;
-        if (vSequenceTrouvee == null) vSequenceValeur = 1;
-        else vSequenceValeur = vSequenceTrouvee.getDerniereValeur() + 1;
-        
-        String vReferenceEcriture = pEcritureComptable.getJournal().getCode() +
-                "-" + vEcritureComptableAnnee +
-                "/" + String.format("%05d", vSequenceValeur);
-         pEcritureComptable.setReference(vReferenceEcriture);
-         pEcritureComptable.setId(-1);
-			manager.updateEcritureComptable(pEcritureComptable);
-			
-		
-	        SequenceEcritureComptable vNouvelleSequence= new SequenceEcritureComptable();
-	        vNouvelleSequence.setAnnee(vEcritureComptableAnnee);
-	        vNouvelleSequence.setJournalCode(pEcritureComptable.getJournal().getCode());
-	        vNouvelleSequence.setDerniereValeur(vSequenceValeur);
-	        if (vSequenceTrouvee == null) {
-	        	manager.insertSequenceEcritureComptable(vNouvelleSequence);
-	        } else {
-	        	manager.updateSequenceEcritureComptable(vNouvelleSequence);
-	        }
-			
-		assertEquals(manager.getEcritureComptable(pEcritureComptable.getId()).getReference(),vReferenceEcriture);
+    	manager.addReference(pEcritureComptable);
+    	
     }
     
 }
