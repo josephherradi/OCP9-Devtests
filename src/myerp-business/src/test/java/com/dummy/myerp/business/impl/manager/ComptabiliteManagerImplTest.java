@@ -119,4 +119,65 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
     	
     }
     
+    @Test(expected= FunctionalException.class)
+    public void checkEcritureComptableUnitRG5a() throws ParseException, FunctionalException {
+    	EcritureComptable pEcritureComptable=new EcritureComptable();
+    	pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+    	Date d = sdf.parse("2019/12/31");
+    	pEcritureComptable.setDate(d);
+    	pEcritureComptable.setLibelle("Libelle");
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+
+        pEcritureComptable.setReference("AC-" + "2018" + "/00001");
+        manager.checkEcritureComptableUnit(pEcritureComptable);
+        
+    }
+    
+    @Test(expected= FunctionalException.class)
+    public void checkEcritureComptableUnitRG5b() throws ParseException, FunctionalException {
+    	EcritureComptable pEcritureComptable=new EcritureComptable();
+    	pEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+    	Date d = sdf.parse("2019/12/31");
+    	pEcritureComptable.setDate(d);
+    	pEcritureComptable.setLibelle("Libelle");
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(123),
+                null));
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+                null, null,
+                new BigDecimal(123)));
+
+        pEcritureComptable.setReference("OP-" + "2019" + "/00001");
+        manager.checkEcritureComptableUnit(pEcritureComptable);
+}
+    @Test
+    public void checkEcritureComptableContext() throws Exception {
+    	EcritureComptable pEcritureComptable=new EcritureComptable();
+    	pEcritureComptable.setReference("BQ-2016/00001");
+        manager.checkEcritureComptableContext(pEcritureComptable);
+    }
+    
+    @Test(expected= FunctionalException.class)
+    public void checkEcritureComptableRG6a() throws Exception {
+    	EcritureComptable pEcritureComptable=new EcritureComptable();
+    	pEcritureComptable.setReference("BQ-2016/00003");
+        manager.checkEcritureComptableContext(pEcritureComptable);
+    }
+    
+    @Test(expected= FunctionalException.class)
+    public void checkEcritureComptableRG6b() throws Exception {
+    	EcritureComptable pEcritureComptable=new EcritureComptable();
+    	pEcritureComptable.setReference("BQ-2016/00003");
+    	pEcritureComptable.setId(0);
+        manager.checkEcritureComptableContext(pEcritureComptable);
+    }
+    
+    
 }
