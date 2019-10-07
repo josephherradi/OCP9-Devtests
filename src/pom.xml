@@ -55,8 +55,10 @@
 		<log4j.version>2.8.1</log4j.version>
 		<spring.version>4.3.7.RELEASE</spring.version>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
-		<sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/../target/jacoco.exec</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.language>java</sonar.language>
+	<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.language>java</sonar.language>
+    <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 		
 	</properties>
 
