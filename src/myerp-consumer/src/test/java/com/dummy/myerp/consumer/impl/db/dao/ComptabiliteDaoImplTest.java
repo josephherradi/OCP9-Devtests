@@ -12,6 +12,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.consumer.db.AbstractDbConsumer;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
+import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
+
 
 public class ComptabiliteDaoImplTest extends AbstractDbConsumer{
 	
@@ -38,4 +41,18 @@ public void getListCompteComptable() {
     List<CompteComptable> vList = dao.getListCompteComptable();
     assertEquals(7, vList.size());
 }
+
+@Test
+public void getListJournalComptable() {
+    List<JournalComptable> vListJournal = dao.getListJournalComptable();
+    assertEquals(5, vListJournal.size());
+}
+
+@Test
+public void getListEcritureComptable() {
+    List<EcritureComptable> vListEcriture = dao.getListEcritureComptable();
+    assertEquals(5, vListEcriture.size());
+}
+
+
 }
