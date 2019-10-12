@@ -89,7 +89,7 @@ public interface ComptabiliteDao {
      *
      * @param pSequence la séquence recherchée
      */
-    SequenceEcritureComptable getSequenceParCodeEtAnnee(SequenceEcritureComptable pSequence) throws NotFoundException;
+    SequenceEcritureComptable getSequenceParCodeEtAnnee(SequenceEcritureComptable pSequence);
 
     /**
      * Insert une nouvelle séquence écriture comptable ou maj déjà présente.
@@ -100,5 +100,7 @@ public interface ComptabiliteDao {
     
     
     void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable);
+    
+    void deleteSequenceParCodeEtAnnee(SequenceEcritureComptable pSequence);
 }
 

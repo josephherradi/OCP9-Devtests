@@ -63,7 +63,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     // TODO à tester
     @Override
-    public synchronized void addReference(EcritureComptable pEcritureComptable) throws NotFoundException {
+    public synchronized void addReference(EcritureComptable pEcritureComptable) {
         // DONE à implémenter
         // Bien se réferer à la JavaDoc de cette méthode !
         /* Le principe :

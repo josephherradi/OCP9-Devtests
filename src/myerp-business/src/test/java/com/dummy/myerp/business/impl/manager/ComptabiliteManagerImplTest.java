@@ -97,11 +97,35 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
     
-    @Test(expected= NotFoundException.class)
-    public void addReference() throws Exception {
+    //test updateEcritureComptable
+    @Test
+    public void addReference1() throws Exception {
     	EcritureComptable pEcritureComptable=new EcritureComptable();
     	pEcritureComptable.setId(-1);
-    	pEcritureComptable.setJournal(new JournalComptable("OP", "Test"));
+    	pEcritureComptable.setJournal(new JournalComptable("AC", "Test"));
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+    	Date d = sdf.parse("2016/12/31");
+
+
+    	pEcritureComptable.setDate(d);
+    	pEcritureComptable.setLibelle("Test");
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
+                null, new BigDecimal(123),
+                null));
+    	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
+                null, null,
+                new BigDecimal(1234)));
+    	
+    	manager.addReference(pEcritureComptable);
+    	
+    }
+    
+    //test insertEcritureComptable
+    @Test
+    public void addReference2() throws Exception {
+    	EcritureComptable pEcritureComptable=new EcritureComptable();
+    	pEcritureComptable.setId(-1);
+    	pEcritureComptable.setJournal(new JournalComptable("AC", "Test"));
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     	Date d = sdf.parse("2019/12/31");
 
@@ -116,6 +140,12 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
                 new BigDecimal(1234)));
     	
     	manager.addReference(pEcritureComptable);
+    	
+        SequenceEcritureComptable vSequenceRecherche = new SequenceEcritureComptable();
+        vSequenceRecherche.setJournalCode(pEcritureComptable.getJournal().getCode());
+        Integer vEcritureComptableAnnee = Integer.parseInt(new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate()));
+        vSequenceRecherche.setAnnee(vEcritureComptableAnnee);
+    	dao.deleteSequenceParCodeEtAnnee(vSequenceRecherche);
     	
     }
     
