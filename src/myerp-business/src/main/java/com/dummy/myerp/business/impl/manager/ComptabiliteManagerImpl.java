@@ -61,7 +61,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * {@inheritDoc}
      * @throws NotFoundException 
      */
-    // TODO à tester
+    // DONE
     @Override
     public synchronized void addReference(EcritureComptable pEcritureComptable) {
         // DONE à implémenter
