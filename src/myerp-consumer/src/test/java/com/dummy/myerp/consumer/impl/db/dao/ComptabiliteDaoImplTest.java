@@ -19,24 +19,22 @@ import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
+import com.dummy.myerp.testconsumer.consumer.ConsumerTestCase;
 
-public class ComptabiliteDaoImplTest extends AbstractDbConsumer{
+public class ComptabiliteDaoImplTest extends ConsumerTestCase{
 	
 	
 	
-	 private ClassPathXmlApplicationContext appContext;
 	 private static ComptabiliteDaoImpl dao;
 	    
 	    @Before
 	    public void setUp() throws Exception{
-	    appContext= new ClassPathXmlApplicationContext("classpath:testContext.xml");
 	    dao = new ComptabiliteDaoImpl();
 
 	    }
 	    
 	    @After
 	    public void tearDown() throws Exception{
-	    	appContext=null;
 	    	dao=null;
 	    }
 

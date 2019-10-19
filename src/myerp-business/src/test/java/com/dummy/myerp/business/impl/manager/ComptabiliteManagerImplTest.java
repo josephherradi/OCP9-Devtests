@@ -1,6 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import static org.junit.Assert.assertEquals;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,9 +10,6 @@ import java.util.Date;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.dummy.myerp.business.impl.AbstractBusinessManager;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
@@ -19,25 +17,23 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.LigneEcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.FunctionalException;
-import com.dummy.myerp.technical.exception.NotFoundException;
+import com.dummy.myerp.testbusiness.business.BusinessTestCase;
 
 
-public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
+
+public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
     private ComptabiliteManagerImpl manager = new ComptabiliteManagerImpl();
-    private ClassPathXmlApplicationContext appContext;
     private static ComptabiliteDaoImpl dao;
     
     @Before
     public void setUp() throws Exception{
-    appContext= new ClassPathXmlApplicationContext("classpath:testContext.xml");
     dao = new ComptabiliteDaoImpl();
 
     }
     
     @After
     public void tearDown() throws Exception{
-    	appContext=null;
     	dao=null;
     }
     @Test
