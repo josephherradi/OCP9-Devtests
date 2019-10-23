@@ -93,7 +93,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
         manager.checkEcritureComptableUnit(vEcritureComptable);
     }
     
-    //test updateEcritureComptable
+    //test updateSequenceEcritureComptable
     @Test
     public void addReference1() throws Exception {
     	EcritureComptable pEcritureComptable=new EcritureComptable();
@@ -104,7 +104,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 
     	pEcritureComptable.setDate(d);
-    	pEcritureComptable.setLibelle("Test");
+    	pEcritureComptable.setLibelle("Cartouches d’imprimante");
     	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
                 null, new BigDecimal(123),
                 null));
@@ -113,10 +113,24 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
                 new BigDecimal(1234)));
     	
     	manager.addReference(pEcritureComptable);
+    	assertEquals(pEcritureComptable.getReference(),dao.getEcritureComptable(-1).getReference());
+    	
+    	//reinitialisation de l etat initial de la db avant le test
+    	
+    	SequenceEcritureComptable pSequence= new SequenceEcritureComptable();
+    	pSequence.setAnnee(2016);
+    	pSequence.setJournalCode("AC");
+    	pSequence.setDerniereValeur(40);
+    	
+    	dao.updateSequenceEcritureComptable(pSequence);
+    	
+    	pEcritureComptable.setReference("AC-2016/00001");
+    	dao.updateEcritureComptable(pEcritureComptable);
+    	
     	
     }
     
-    //test insertEcritureComptable
+    //test insertSequenceEcritureComptable
     @Test
     public void addReference2() throws Exception {
     	EcritureComptable pEcritureComptable=new EcritureComptable();
@@ -136,12 +150,26 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
                 new BigDecimal(1234)));
     	
     	manager.addReference(pEcritureComptable);
+    	assertEquals(pEcritureComptable.getReference(),dao.getEcritureComptable(-1).getReference());
     	
         SequenceEcritureComptable vSequenceRecherche = new SequenceEcritureComptable();
         vSequenceRecherche.setJournalCode(pEcritureComptable.getJournal().getCode());
         Integer vEcritureComptableAnnee = Integer.parseInt(new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate()));
         vSequenceRecherche.setAnnee(vEcritureComptableAnnee);
+    	
+        assertEquals(Integer.valueOf(2019),dao.getSequenceParCodeEtAnnee(vSequenceRecherche).getAnnee());
+        assertEquals("AC",dao.getSequenceParCodeEtAnnee(vSequenceRecherche).getJournalCode());
+
+
+    	//reinitialisation de l etat initial de la db avant le test
+
     	dao.deleteSequenceParCodeEtAnnee(vSequenceRecherche);
+    	pEcritureComptable.setDate(sdf.parse("2016/12/31"));
+    	pEcritureComptable.setLibelle("Cartouches d’imprimante");
+    	pEcritureComptable.setReference("AC-2016/00001");
+    	dao.updateEcritureComptable(pEcritureComptable);
+    	
+    	
     	
     }
     
