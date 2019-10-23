@@ -106,7 +106,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     	pEcritureComptable.setDate(d);
     	pEcritureComptable.setLibelle("Cartouches d’imprimante");
     	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
-                null, new BigDecimal(123),
+                null, new BigDecimal(1234),
                 null));
     	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
                 null, null,
@@ -143,7 +143,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     	pEcritureComptable.setDate(d);
     	pEcritureComptable.setLibelle("Test");
     	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(606),
-                null, new BigDecimal(123),
+                null, new BigDecimal(1234),
                 null));
     	pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),
                 null, null,

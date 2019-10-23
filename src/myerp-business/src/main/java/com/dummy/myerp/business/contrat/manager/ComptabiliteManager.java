@@ -51,8 +51,9 @@ public interface ComptabiliteManager {
      *
      * <p><strong>Attention :</strong> l'écriture n'est pas enregistrée en persistance</p>
      * @param pEcritureComptable L'écriture comptable concernée
+     * @throws FunctionalException 
      */
-    void addReference(EcritureComptable pEcritureComptable) throws NotFoundException;
+    void addReference(EcritureComptable pEcritureComptable) throws NotFoundException, FunctionalException;
 
     /**
      * Vérifie que l'Ecriture comptable respecte les règles de gestion.
