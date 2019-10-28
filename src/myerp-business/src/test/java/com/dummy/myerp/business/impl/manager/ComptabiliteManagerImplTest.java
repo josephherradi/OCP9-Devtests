@@ -224,7 +224,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
     	pEcritureComptable.setReference("BQ-2016/00003");
         manager.checkEcritureComptableContext(pEcritureComptable);
     }
-    
+    //
     @Test(expected= FunctionalException.class)
     public void checkEcritureComptableRG6b() throws Exception {
     	EcritureComptable pEcritureComptable=new EcritureComptable();
